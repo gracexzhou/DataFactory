@@ -1,0 +1,18 @@
+{
+	"name": "DestinationDataset_digitaldls_adobe",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_anc_digitaldls",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileSystem": "adobe"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

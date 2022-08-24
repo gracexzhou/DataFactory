@@ -1,0 +1,78 @@
+{
+	"name": "pl_mt_aml_dynamic",
+	"properties": {
+		"activities": [
+			{
+				"name": "Get AML Pipeline Endpoint ID",
+				"type": "DatabricksNotebook",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"notebookPath": "/scripts/adf/get-pipeline-id",
+					"baseParameters": {
+						"Pipeline Endpoint Name": {
+							"value": "@pipeline().parameters.pipelineEndpointName",
+							"type": "Expression"
+						}
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_mt_databricks",
+					"type": "LinkedServiceReference"
+				}
+			},
+			{
+				"name": "pl_aml_dynamic",
+				"type": "AzureMLExecutePipeline",
+				"dependsOn": [
+					{
+						"activity": "Get AML Pipeline Endpoint ID",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"policy": {
+					"timeout": "7.00:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"experimentName": {
+						"value": "@pipeline().parameters.experimentName",
+						"type": "Expression"
+					},
+					"mlPipelineEndpointId": {
+						"value": "@activity('Get AML Pipeline Endpoint ID').output.runOutput",
+						"type": "Expression"
+					}
+				},
+				"linkedServiceName": {
+					"referenceName": "ls_mt_aml",
+					"type": "LinkedServiceReference"
+				}
+			}
+		],
+		"parameters": {
+			"pipelineEndpointName": {
+				"type": "string"
+			},
+			"experimentName": {
+				"type": "string"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-08-08T22:10:52Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

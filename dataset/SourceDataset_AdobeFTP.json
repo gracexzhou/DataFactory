@@ -1,0 +1,18 @@
+{
+	"name": "SourceDataset_AdobeFTP",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_adobe_sftp",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Binary",
+		"typeProperties": {
+			"location": {
+				"type": "SftpLocation",
+				"folderPath": "/to_azure"
+			}
+		}
+	},
+	"type": "Microsoft.DataFactory/factories/datasets"
+}

@@ -1,0 +1,184 @@
+{
+	"name": "CP_Batch_Inference_Pipeline",
+	"properties": {
+		"activities": [
+			{
+				"name": "Until1",
+				"type": "Until",
+				"dependsOn": [
+					{
+						"activity": "Set Inference Date",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@or(equals(variables('Pipeline_status'),'Success'),equals(variables('Retry_count'),pipeline().parameters.Max_retry))",
+						"type": "Expression"
+					},
+					"activities": [
+						{
+							"name": "AML CP Batch Inferencing Pipeline",
+							"type": "AzureMLExecutePipeline",
+							"dependsOn": [
+								{
+									"activity": "Set Retry_counter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "7.00:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"mlPipelineParameters": {
+									"inference_date": {
+										"value": "@variables('inference_date')",
+										"type": "Expression"
+									}
+								},
+								"continueOnStepFailure": false,
+								"mlPipelineEndpointId": "fcde71dd-be69-4244-8960-10e54a6bb5e9"
+							},
+							"linkedServiceName": {
+								"referenceName": "ls_anc_aml",
+								"type": "LinkedServiceReference"
+							}
+						},
+						{
+							"name": "Wait before rerun",
+							"description": "Wait 1 day ",
+							"type": "Wait",
+							"dependsOn": [
+								{
+									"activity": "AML CP Batch Inferencing Pipeline",
+									"dependencyConditions": [
+										"Failed"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"waitTimeInSeconds": 86400
+							}
+						},
+						{
+							"name": "Pipeline Fail",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Wait before rerun",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Pipeline_status",
+								"value": "Failure"
+							}
+						},
+						{
+							"name": "Set Temp Counter",
+							"type": "SetVariable",
+							"dependsOn": [],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Temp_counter",
+								"value": {
+									"value": "@string(add(int(variables('Retry_count')),1))",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Set Retry_counter",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "Set Temp Counter",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Retry_count",
+								"value": {
+									"value": "@variables('Temp_counter')",
+									"type": "Expression"
+								}
+							}
+						},
+						{
+							"name": "Pipeline Success",
+							"type": "SetVariable",
+							"dependsOn": [
+								{
+									"activity": "AML CP Batch Inferencing Pipeline",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"userProperties": [],
+							"typeProperties": {
+								"variableName": "Pipeline_status",
+								"value": "Success"
+							}
+						}
+					],
+					"timeout": "7.00:00:00"
+				}
+			},
+			{
+				"name": "Set Inference Date",
+				"type": "SetVariable",
+				"dependsOn": [],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "inference_date",
+					"value": {
+						"value": "@adddays(utcnow('yyyy-MM-dd'),-2, 'yyyy-MM-dd')",
+						"type": "Expression"
+					}
+				}
+			}
+		],
+		"parameters": {
+			"Max_retry": {
+				"type": "string",
+				"defaultValue": "5"
+			}
+		},
+		"variables": {
+			"inference_date": {
+				"type": "String"
+			},
+			"Retry_count": {
+				"type": "String",
+				"defaultValue": "0"
+			},
+			"Pipeline_status": {
+				"type": "String"
+			},
+			"Temp_counter": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"lastPublishTime": "2022-08-19T14:45:05Z"
+	},
+	"type": "Microsoft.DataFactory/factories/pipelines"
+}

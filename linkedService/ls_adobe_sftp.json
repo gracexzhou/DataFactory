@@ -1,0 +1,27 @@
+{
+	"name": "ls_adobe_sftp",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "Sftp",
+		"typeProperties": {
+			"host": "ftp.omniture.com",
+			"port": 22,
+			"skipHostKeyValidation": true,
+			"authenticationType": "Basic",
+			"userName": "Domo2",
+			"password": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_anc_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "DMT-NPE-DIGITAL-ADOBE-ADF"
+			}
+		},
+		"connectVia": {
+			"referenceName": "anc-ir",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

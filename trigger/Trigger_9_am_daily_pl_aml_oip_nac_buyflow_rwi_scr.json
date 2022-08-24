@@ -1,0 +1,37 @@
+{
+	"name": "Trigger_9_am_daily_pl_aml_oip_nac_buyflow_rwi_scr",
+	"properties": {
+		"description": "Scheduled daily at 9 am EST",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_mt_aml_dynamic",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"pipelineEndpointName": "Digital_OIP_Buyflow_NAC_Inferencing",
+					"experimentName": "Digital_OIP_NAC_Buyflow_Daily_Batch_Inference_Run"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-08-08T22:00:00",
+				"timeZone": "Eastern Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						9
+					]
+				}
+			}
+		}
+	}
+}

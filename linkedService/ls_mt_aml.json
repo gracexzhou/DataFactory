@@ -1,0 +1,39 @@
+{
+	"name": "ls_mt_aml",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureMLService",
+		"typeProperties": {
+			"subscriptionId": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_mt_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "secret-amlmt-aml-subscription-id"
+			},
+			"resourceGroupName": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_mt_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "secret-amlmt-aml-resource-group"
+			},
+			"mlWorkspaceName": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_mt_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "secret-amlmt-aml-workspace-name"
+			},
+			"authentication": "MSI"
+		},
+		"connectVia": {
+			"referenceName": "anc-ir",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

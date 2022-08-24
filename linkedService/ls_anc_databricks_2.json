@@ -1,0 +1,39 @@
+{
+	"name": "ls_anc_databricks_2",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureDatabricks",
+		"annotations": [],
+		"typeProperties": {
+			"domain": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_anc_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "secret-anc-adf-ls-databricks-workspace-url-2"
+			},
+			"authentication": "MSI",
+			"workspaceResourceId": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_anc_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "secret-anc-adf-ls-databricks-workspace-resource-id-2"
+			},
+			"newClusterNodeType": "Standard_DS4_v2",
+			"newClusterNumOfWorker": "8",
+			"newClusterSparkEnvVars": {
+				"PYSPARK_PYTHON": "/databricks/python3/bin/python3"
+			},
+			"newClusterVersion": "10.4.x-scala2.12",
+			"newClusterInitScripts": [],
+			"clusterOption": "Fixed"
+		},
+		"connectVia": {
+			"referenceName": "anc-ir",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

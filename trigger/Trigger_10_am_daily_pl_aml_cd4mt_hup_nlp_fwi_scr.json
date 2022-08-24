@@ -1,0 +1,37 @@
+{
+	"name": "Trigger_10_am_daily_pl_aml_cd4mt_hup_nlp_fwi_scr",
+	"properties": {
+		"description": "Schedule 10 AM daily",
+		"annotations": [],
+		"runtimeState": "Started",
+		"pipelines": [
+			{
+				"pipelineReference": {
+					"referenceName": "pl_mt_aml_dynamic",
+					"type": "PipelineReference"
+				},
+				"parameters": {
+					"pipelineEndpointName": "Digital_CD4MT_FidoCare_Inference_Endpoint",
+					"experimentName": "digital_cd4mt_auto-inference-pipeline-fidocare-exp"
+				}
+			}
+		],
+		"type": "ScheduleTrigger",
+		"typeProperties": {
+			"recurrence": {
+				"frequency": "Day",
+				"interval": 1,
+				"startTime": "2022-08-08T22:03:00",
+				"timeZone": "Eastern Standard Time",
+				"schedule": {
+					"minutes": [
+						0
+					],
+					"hours": [
+						10
+					]
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,15 @@
+{
+	"name": "ls_anc_digitaldls",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"annotations": [],
+		"type": "AzureBlobFS",
+		"typeProperties": {
+			"url": "https://mazcacnpedigitaldls01.dfs.core.windows.net/"
+		},
+		"connectVia": {
+			"referenceName": "anc-ir",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}

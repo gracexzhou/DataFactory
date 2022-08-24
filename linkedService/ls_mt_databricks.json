@@ -1,0 +1,39 @@
+{
+	"name": "ls_mt_databricks",
+	"type": "Microsoft.DataFactory/factories/linkedservices",
+	"properties": {
+		"type": "AzureDatabricks",
+		"annotations": [],
+		"typeProperties": {
+			"domain": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_mt_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "secret-amlmt-databricks-workspace-url"
+			},
+			"authentication": "MSI",
+			"workspaceResourceId": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_mt_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "secret-amlmt-databricks-workspace-resource-id"
+			},
+			"existingClusterId": {
+				"type": "AzureKeyVaultSecret",
+				"store": {
+					"referenceName": "ls_mt_akv",
+					"type": "LinkedServiceReference"
+				},
+				"secretName": "secret-amlmt-databricks-cluster-id"
+			}
+		},
+		"connectVia": {
+			"referenceName": "anc-ir",
+			"type": "IntegrationRuntimeReference"
+		}
+	}
+}
